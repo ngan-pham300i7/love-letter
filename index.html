@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>You've got new emails</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root { --red:#1d2f6f; --red-dark:#121f4d; --paper:#e8e6e1; --ink:#2a2a2a; --pink:#e8636b; --pink-light:#d98f95; }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { min-height: 100%; }
+  body { font-family: 'Gaegu', 'Comic Sans MS', cursive; font-size: 22px; background: var(--paper); color: var(--ink); }
+  .screen { display: none; min-height: 100vh; min-height: 100dvh; padding: calc(env(safe-area-inset-top, 0px) + 24px) 20px calc(env(safe-area-inset-bottom, 0px) + 32px); }
+  .screen.on { display: flex; animation: fade .5s ease; }
+  @keyframes fade { from { opacity: 0 } to { opacity: 1 } }
+
+  /* Screen 1 */
+  #s1 { flex-direction: column; align-items: center; justify-content: center; gap: 22px; text-align: center; }
+  #s1 h1 { font-size: 2.1rem; font-weight: 400; }
+  #s1 p { font-size: 1.7rem; }
+  .env { width: 200px; height: 140px; position: relative; background: var(--pink); border-radius: 8px; border: 0; cursor: pointer; animation: bob 2.4s ease-in-out infinite; }
+  .env .flap { position: absolute; inset: 0 0 auto 0; height: 70px; background: var(--pink-light); clip-path: polygon(0 0, 100% 0, 50% 100%); transform-origin: top; transition: transform .5s; }
+  .env .heart { position: absolute; left: 50%; top: 52px; width: 34px; height: 34px; margin-left: -17px; z-index: 2; }
+  .env.open { animation: none; }
+  .env.open .flap { transform: rotateX(180deg); }
+  @keyframes bob { 0%,100% { transform: translateY(0) rotate(-1deg) } 50% { transform: translateY(-8px) rotate(1deg) } }
+  .hint { font-size: 1.1rem; opacity: .55; }
+
+  /* Screen 2 */
+  #s2 { background: var(--paper); align-items: center; }
+  .card { width: 100%; max-width: 560px; margin: 0 auto; background: linear-gradient(135deg, var(--red-dark), var(--red)); color: #fff; border-radius: 18px; padding: 30px 26px 34px; display: flex; flex-direction: column; gap: 22px; }
+  .card .meta { line-height: 1.5; font-size: 1.5rem; }
+  .card .label { font-size: 1.5rem; }
+  .card .msg { font-size: 1.7rem; padding-left: 6px; }
+  .card button { align-self: center; background: none; border: 0; color: #fff; font: inherit; font-size: 1.5rem; text-decoration: underline; cursor: pointer; padding: 8px 12px; margin-top: 6px; }
+
+  /* Screen 3 */
+  #s3 { background: var(--red); color: #fff; flex-direction: column; align-items: center; padding-top: 0; }
+  .bunting { width: calc(100% + 40px); margin: 0 -20px; height: 60px; display: block; }
+  .stage { width: 100%; max-width: 560px; display: flex; flex-direction: column; align-items: center; gap: 14px; padding-top: calc(env(safe-area-inset-top, 0px) + 6px); }
+  .photo { width: 190px; height: 190px; border-radius: 50%; object-fit: cover; border: 6px solid #fff; transform: rotate(-3deg); }
+  .title { font-size: 2.3rem; font-weight: 700; text-align: center; line-height: 1.1; }
+  .sub { font-size: 1.4rem; text-align: center; opacity: .9; }
+  .letter { width: 100%; font-size: 1.45rem; line-height: 1.45; margin-top: 10px; }
+  .letter p { margin-bottom: 1.1em; }
+  .sign { text-align: right; font-size: 1.6rem; margin-top: 6px; }
+  .again { margin-top: 24px; background: none; border: 0; color: #fff; opacity: .7; font: inherit; font-size: 1.1rem; text-decoration: underline; cursor: pointer; }
+
+  @media (prefers-reduced-motion: reduce) { .env { animation: none; } .screen.on { animation: none; } }
+</style>
+</head>
+<body>
+
+<!-- Screen 1: envelope -->
+<main class="screen on" id="s1">
+  <h1>hey babe!</h1>
+  <button class="env" id="env" aria-label="Open the envelope">
+    <span class="flap"></span>
+    <svg class="heart" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 29 C4 20 2 11 8 6 C12 3 16 6 16 9 C16 6 20 3 24 6 C30 11 28 20 16 29Z" fill="#dc2630"/></svg>
+  </button>
+  <p>you've got new emails</p>
+  <span class="hint">tap the envelope</span>
+</main>
+
+<!-- Screen 2: email card -->
+<main class="screen" id="s2">
+  <div class="card">
+    <div class="meta">
+      From: Ngan Pham<br>      <!-- change "Your girl" to your name -->
+      To: John Doan
+    </div>
+    <div>
+      <div class="label">Message:</div>
+      <p class="msg">Check out this awesome surprise for YOU!</p>
+    </div>
+    <button id="attach">see attachment</button>
+  </div>
+</main>
+
+<!-- Screen 3: the letter -->
+<main class="screen" id="s3">
+  <svg class="bunting" viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 6 Q200 26 400 6" stroke="#f3c6c6" stroke-width="2" fill="none"/>
+    <g>
+      <polygon points="10,10 40,14 22,48" fill="#e9b9b9"/>
+      <polygon points="60,16 90,19 72,52" fill="#3f9d9a"/>
+      <polygon points="110,20 140,22 122,54" fill="#e9b9b9"/>
+      <polygon points="160,22 190,23 172,55" fill="#3f9d9a"/>
+      <polygon points="210,23 240,22 222,54" fill="#e9b9b9"/>
+      <polygon points="260,22 290,20 272,52" fill="#3f9d9a"/>
+      <polygon points="310,19 340,16 322,48" fill="#e9b9b9"/>
+      <polygon points="360,14 390,10 372,42" fill="#3f9d9a"/>
+    </g>
+  </svg>
+
+  <div class="stage">
+    <!-- Put a photo named photo.jpg in the same repository to show it here. No photo = it just disappears. -->
+    <img class="photo" src="photo.jpeg" alt="" onerror="this.remove()">
+    <h2 class="title">Happy Boy's Day, John!</h2>
+    <p class="sub">and happy 1 year 4 months, baby</p>
+
+    <div class="letter">
+      <p>Wohoooo, happy Boy's Day and happy 1 year 4 months anniversary, baby!</p>
+
+      <p>I don't know how to start this letter, because I have so much to tell my precious baby. So I think I'll start with this: thank you. Thank you for being by my side all this time. Maybe you'll be like, this girl keeps repeating herself in every letter, but whatever, man. I just really love you and appreciate you for all the time you've been with me.</p>
+
+      <p>You've been so patient and gentle with me lately, even with all my unreasonable and silly moments. I never want to leave you, because you're always the love of my life, and the one I'll try my best to do everything for. I know sometimes I get really emotional and my brain feels really bad, and I'm scared I'm going to hurt you. That's why I sometimes choose to leave. But I would never stop loving you.</p>
+
+      <p>More than that, I want you to know that I support you in whatever you do, and I'll always be by your side. I know you've been working so hard for our future, and I'm really happy to see you moving forward and growing.</p>
+
+      <p>Happy Boy's Day again, my love. I love you more than words can explain.</p>
+
+      <p class="sign">Forever your love,<br>Ngan Pham</p> <!-- change to your name -->
+    </div>
+    <button class="again" id="again">read from the start</button>
+  </div>
+</main>
+
+<script>
+  var s = [document.getElementById('s1'), document.getElementById('s2'), document.getElementById('s3')];
+  function show(i) {
+    s.forEach(function (el, n) { el.classList.toggle('on', n === i); });
+    window.scrollTo(0, 0);
+  }
+  var env = document.getElementById('env');
+  env.addEventListener('click', function () {
+    env.classList.add('open');
+    setTimeout(function () { show(1); }, 650);
+  });
+  document.getElementById('attach').addEventListener('click', function () { show(2); });
+  document.getElementById('again').addEventListener('click', function () { env.classList.remove('open'); show(0); });
+</script>
+</body>
+</html>
